@@ -1,76 +1,49 @@
-import { Action, ActionPanel,  Form } from "@raycast/api";
-import { useForm } from "@raycast/utils";
-import { useEffect, useState } from "react";
-
-interface URLBox {
-	URLFormBox: string;
-}
+import { Action, ActionPanel, Form, showToast, Toast } from "@raycast/api";
+import { useState } from "react";
 
 
 export default function Command(){
-	const [url123, setURL] = useState("https://google.com");
+	const [url123, setURL] = useState("");
 
-	// const { handleSubmit, itemProps } = useForm<URLBox>({
-	// 	onSubmit(values : URLBox) {
-	// 		const newURL = `https://x.com/${values.URLFormBox}`;
-	// 		setURL(newURL);
-	// 		console.log({url123});
-	// 	},
-	// });
-
-	useEffect(()=>{
-		console.log("URL state updated", url123);
-		if(url123){
-			console.log("Attempting to render Action.OpenInBrowser with URL:", url123);
+	const BuildURL = (newValue: string) => {
+		if(newValue === ""){
+			showToast({style:Toast.Style.Failure, title:"URL Empty", message:"Please enter a valid URL"});
+			return "URL cannot be empty";
 		}
-	}, [url123]);
-
-	const { handleSubmit, itemProps } = useForm<URLBox>({
-		onSubmit: (values: URLBox) => {
-			console.log("Submitted values:", values);
-
-			const newURL = `https://x.com/${values.URLFormBox}`;
-			console.log("constructed URL:", newURL);
-
-			if(!newURL || !newURL.startsWith("https://x.com/")){
-				console.error("Invalid URL format:", newURL);
-				return;
-			}
-
-			setURL(newURL);
-
-			values.URLFormBox = "";
-	},
-		validation:{
-			URLFormBox: (value) => {
-				if(!value) return "URL path cannot be empty";
-				if(value.includes(" ")) return "URL path cannot contain spaces";
-				return null;
-			}
+		if(newValue.includes(" ")){
+			showToast({style:Toast.Style.Failure, title:"URL has Spaces", message:"Please enter a valid URL"});
+			return "URL cannot have spaces";
 		}
-	});
+
+		if(newValue.includes(".com")){
+			let pos = newValue.indexOf(".com/");
+			pos += 5;
+			newValue = newValue.substring(pos);
+		}
+
+		const newURL = `https://x.com/${newValue}`;
+		setURL(newURL);
+	}
+
 
 	return (
 		<Form
 			actions={
 		<ActionPanel>
-			<Action.SubmitForm title="Submit" onSubmit = {handleSubmit} />
 			{url123 ? (
-				<>
-					<Action.OpenInBrowser url={url123} title="Open in Browser" onOpen={() => console.log("opened successfully")} />
-					<Action title={"Debut: URL Rendered"} onAction={() => console.log("URL rendered:", url123)}/>
-				</>
+				<Action.OpenInBrowser url={url123} title={"Open in X"}/>
 			) : (
-				<Action title={"no URL yet"} onAction={() => console.log("No url in state")}/>
+				<Action title={"No URL"} onAction={() => console.log("no url")}/>
 			)}
 		</ActionPanel>
 	}
 	>
-	{/*<Form.TextField title="URL" placeholder="https://x.com/"  {...itemProps.URLFormBox} />*/}
 			<Form.TextField
+				id={"URL"}
 				title="URL"
-				placeholder={"https://google.com"}
-				{...itemProps.URLFormBox}/>
+				placeholder="Enter URL"
+				onChange={BuildURL}
+			/>
 	</Form>
 	);
 }
