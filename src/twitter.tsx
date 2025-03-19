@@ -1,9 +1,34 @@
-import { Detail, Text } from "@raycast/api";
+// import { showHUD, Clipboard } from "@raycast/api";
+import { Action, ActionPanel, Alert, Detail, Form, showToast, Toast} from "@raycast/api";
+import { useForm, FormValidation } from "@raycast/utils";
 
-export default function Command() {
-	console.log("Running function");
+interface URLBox {
+	URLFormBox: string;
+}
+
+export default function Command(){
 	// return <Detail markdown="# Hello World" />;
-	const result = <Detail markdown="# Hello World" />;
-	console.log("Returning:", result);
-	return <Text>Hello world</Text>;
+	const { handleSubmit, itemProps } = useForm<URLBox>({
+		onSubmit(values) {
+			showToast({
+				style: Toast.Style.Success,
+				title: "Test123",
+				message: '${values.URLFormBox} is URL to be downloaded from',
+			});
+		},
+			validation: {
+				URLFormBox: FormValidation.Required,
+					}
+	});
+	return (
+		<Form
+			actions={
+		<ActionPanel>
+			<Action.SubmitForm title="Submit" onSubmit = {handleSubmit} />
+		</ActionPanel>
+	}
+	>
+	<Form.TextField title="URL" placeholder="https://x.com/"  {...itemProps.URLFormBox} />
+	</Form>
+	);
 }
