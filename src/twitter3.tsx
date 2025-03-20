@@ -1,4 +1,4 @@
-import { Action, ActionPanel, Form, showToast, Toast } from "@raycast/api";
+import { Action, ActionPanel, Form, showToast, Toast, popToRoot } from "@raycast/api";
 import { useState } from "react";
 
 
@@ -25,16 +25,16 @@ export default function Command(){
 		setURL(newURL);
 	}
 
+	async function finish()  {
+		await popToRoot();
+	}
+
 
 	return (
 		<Form
 			actions={
 		<ActionPanel>
-			{url123 ? (
-				<Action.OpenInBrowser url={url123} title={"Open in X"}/>
-			) : (
-				<Action title={"No URL"} onAction={() => console.log("no url")}/>
-			)}
+				<Action.OpenInBrowser url={url123} title={"Open in X"} onOpen={async () => await finish()}/>
 		</ActionPanel>
 	}
 	>

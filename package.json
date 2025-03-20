@@ -11,7 +11,16 @@
       "name": "twitter",
       "title": "Twitter",
       "description": "Opens current page in X",
-      "mode": "view",
+      "mode": "no-view",
+      "arguments": [
+        {
+          "name": "URL",
+          "placeholder": "https://x.com/",
+          "type": "text",
+          "required": true
+        }
+      ],
+
       "entry": "src/twitter.tsx"
     }
   ],
