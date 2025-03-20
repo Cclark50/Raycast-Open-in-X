@@ -1,4 +1,4 @@
-import { Action, ActionPanel, Form, showToast, Toast, closeMainWindow, popToRoot } from "@raycast/api";
+import { Action, ActionPanel, Form, showToast, Toast, popToRoot } from "@raycast/api";
 import { useState } from "react";
 
 

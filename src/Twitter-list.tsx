@@ -18,7 +18,7 @@ export default function Command(){
     return `https://x.com/${url}`;
   }
 
-  const url : string = buildURL(searchText);
+  let url : string = buildURL(searchText);
 
   return (
     <List
