@@ -1,3 +1,6 @@
+//This is where I attempted a list version of the same extension but got nowhere with it
+//Do not use this file
+
 import { Action, ActionPanel, List, popToRoot} from "@raycast/api";
 import { useState} from "react";
 
