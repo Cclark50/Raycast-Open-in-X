@@ -1,3 +1,5 @@
+//This file is a previous version that was used as a form in raycast to sanitize and open an x.com link
+
 import { Action, ActionPanel, Form, showToast, Toast, popToRoot } from "@raycast/api";
 import { useState } from "react";
 
